@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import fs from "fs";
+import path from 'path';
+import { dataParse, readFile } from './utils.js';
 
 // eslint-disable-next-line max-len
 const getObjectDiff = (obj1, obj2, compareRef = false) => Object.keys(obj1).reduce((result, key) => {
@@ -50,7 +51,7 @@ const renderString = (key, value, data1, data2) => {
 
 const convertJsonToString = (arr, firstObj, secondObj) => {
   const startString = '{\n';
-  const endString = '}';
+  const endString = '}\n';
   let resultString = '';
 
   resultString += startString;
@@ -65,17 +66,17 @@ const convertJsonToString = (arr, firstObj, secondObj) => {
   return resultString;
 };
 
-const genDiff = (firstArgument, secondArgument) => {
-  const jsonFirst = JSON.parse(fs.readFileSync(firstArgument, 'utf8'));
-  const jsonSecond = JSON.parse(fs.readFileSync(secondArgument, 'utf8'));
-  const objWithChanges = { ...jsonSecond };
+const genDiff = (firstFile, secondFile) => {
+  const firstData = dataParse(readFile(firstFile, 'utf8'), path.extname(firstFile));
+  const secondData = dataParse(readFile(secondFile, 'utf8'), path.extname(secondFile));
+  const objWithChanges = { ...secondData };
   const result = {};
-  const changedKeys = getObjectDiff(jsonFirst, jsonSecond);
+  const changedKeys = getObjectDiff(firstData, secondData);
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const key of Object.keys(jsonFirst)) {
-    if (changedKeys.includes(key) && !Object.keys(jsonSecond).includes(key)) {
-      objWithChanges[key] = jsonFirst[key];
+  for (const key of Object.keys(firstData)) {
+    if (changedKeys.includes(key) && !Object.keys(secondData).includes(key)) {
+      objWithChanges[key] = firstData[key];
     }
   }
 
@@ -85,7 +86,9 @@ const genDiff = (firstArgument, secondArgument) => {
       result[key] = objWithChanges[key];
     });
 
-  console.log(convertJsonToString(Object.entries(result), jsonFirst, jsonSecond));
+  console.log(convertJsonToString(Object.entries(result), firstData, secondData));
+
+  return convertJsonToString(Object.entries(result), firstData, secondData);
 };
 
 export default genDiff;

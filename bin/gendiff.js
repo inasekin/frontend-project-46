@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import * as fs from 'fs';
 import genDiff from '../src/main.js';
 
 const program = new Command();
@@ -13,7 +12,7 @@ program
   .helpOption('-h, --help', 'output usage information')
   .version('1.0.0')
   .option('-f, --format <type>', 'output format')
-  .action((firstArgument, secondArgument) => {
-    genDiff(firstArgument, secondArgument);
+  .action((firstFile, secondFile) => {
+    genDiff(firstFile, secondFile);
   })
   .parse();

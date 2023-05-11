@@ -1,0 +1,16 @@
+{
+  - age: 18
+  + age: 32
+  - city: Boston
+  + city: New-York
+  - hobby: music
+  + hobby: IT, music, skiing
+    name: Michael
+  + salary: 30000$
+    sex: male
+  - status: unmarried
+  - weight: 78kg
+  + weight: 86kg
+  - work: false
+  + work: true
+}

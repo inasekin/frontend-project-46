@@ -19,4 +19,4 @@ make install
 
 ## Asciinems
 
-[![asciicast](https://asciinema.org/a/540826.svg)](https://asciinema.org/a/A6Cx30pSeeyWJSHCktzJ4eDzU)
+[![asciicast](https://asciinema.org/a/A6Cx30pSeeyWJSHCktzJ4eDzU.svg)](https://asciinema.org/a/A6Cx30pSeeyWJSHCktzJ4eDzU)
