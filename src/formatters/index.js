@@ -11,7 +11,7 @@ const outputFormatter = (data, formatter) => {
   }
 
   if (formatter === 'json') {
-    return `${JSON.stringify(data, null, 2)}\n`;
+    return JSON.stringify(data, null, 2);
   }
 
   throw new Error(`Wrong formatter: ${formatter}`);

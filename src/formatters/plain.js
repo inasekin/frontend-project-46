@@ -41,7 +41,7 @@ const plain = (data) => {
     return sortedLines.filter((line) => line !== undefined).join('\n');
   };
 
-  return `${generatePropertyLines(data)}\n`;
+  return generatePropertyLines(data);
 };
 
 export default plain;
