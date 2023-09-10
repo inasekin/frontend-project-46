@@ -35,18 +35,8 @@ const plain = (data) => {
           throw new Error(`Unknown type ${value.status}`);
       }
     });
-
-    // Custom sorting function
-    const sortedLines = lines.reduce((acc, line) => {
-      let index = 0;
-      while (index < acc.length && line.localeCompare(acc[index]) >= 0) {
-        index += 1;
-      }
-      acc.splice(index, 0, line);
-      return acc;
-    }, []);
-
-    return sortedLines.join('\n');
+    const sortedLines = [...lines].sort();
+    return sortedLines.filter((line) => line !== undefined).join('\n');
   };
 
   return generatePropertyLines(data);

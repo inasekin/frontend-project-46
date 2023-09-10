@@ -19,21 +19,7 @@ const stylish = (diff) => {
     const processNested = (val, dep) => `${getIndentation(dep)}  ${val.name}: ${iter(val.children, dep + 1)}`;
     const lastBracketIndent = depth === 1 ? '' : `${getIndentation(depth - 1)}  `;
 
-    // Sort the entries by property name
-    const sortedEntries = currentValue
-      .slice() // Создаем копию массива, чтобы не изменять оригинальный
-      .reduce((acc, current) => {
-        // Находим место для вставки текущего элемента в новом массиве,
-        // чтобы его сохранить отсортированным
-        let index = 0;
-        while (index < acc.length && current.name.localeCompare(acc[index].name) > 0) {
-          index += 1;
-        }
-
-        // Вставляем текущий элемент в новый массив на соответствующую позицию
-        acc.splice(index, 0, current);
-        return acc;
-      }, []);
+    const sortedEntries = [...currentValue].sort((a, b) => a.name.localeCompare(b.name));
 
     const lines = sortedEntries.map((val) => {
       const value1Str = stringify(val.value1, depth + 1);
