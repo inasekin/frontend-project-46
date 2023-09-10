@@ -21,8 +21,19 @@ const stylish = (diff) => {
 
     // Sort the entries by property name
     const sortedEntries = currentValue
-      .slice() // Create a copy of the array to avoid modifying the original
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .slice() // Создаем копию массива, чтобы не изменять оригинальный
+      .reduce((acc, current) => {
+        // Находим место для вставки текущего элемента в новом массиве,
+        // чтобы его сохранить отсортированным
+        let index = 0;
+        while (index < acc.length && current.name.localeCompare(acc[index].name) > 0) {
+          index += 1;
+        }
+
+        // Вставляем текущий элемент в новый массив на соответствующую позицию
+        acc.splice(index, 0, current);
+        return acc;
+      }, []);
 
     const lines = sortedEntries.map((val) => {
       const value1Str = stringify(val.value1, depth + 1);

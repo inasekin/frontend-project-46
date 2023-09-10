@@ -36,9 +36,17 @@ const plain = (data) => {
       }
     });
 
-    const sortedLines = lines.sort(); // Сортируем строки по имени свойства
+    // Custom sorting function
+    const sortedLines = lines.reduce((acc, line) => {
+      let index = 0;
+      while (index < acc.length && line.localeCompare(acc[index]) >= 0) {
+        index += 1;
+      }
+      acc.splice(index, 0, line);
+      return acc;
+    }, []);
 
-    return sortedLines.filter((line) => line !== undefined).join('\n');
+    return sortedLines.join('\n');
   };
 
   return generatePropertyLines(data);
