@@ -10,6 +10,10 @@ const outputFormatter = (data, formatter) => {
     return plain(data);
   }
 
+  if (formatter === 'json') {
+    return `${JSON.stringify(data, null, 2)}\n`;
+  }
+
   throw new Error(`Wrong formatter: ${formatter}`);
 };
 
