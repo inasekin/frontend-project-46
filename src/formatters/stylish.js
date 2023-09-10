@@ -16,7 +16,13 @@ const stylish = (diff) => {
   const iter = (currentValue, depth) => {
     const processNested = (val, dep) => `${getIndentation(dep)}  ${val.name}: ${iter(val.children, dep + 1)}`;
     const lastBracketIndent = depth === 1 ? '' : `${getIndentation(depth - 1)}  `;
-    const lines = currentValue.map((val) => {
+
+    // Sort the entries by property name
+    const sortedEntries = currentValue
+      .slice() // Create a copy of the array to avoid modifying the original
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    const lines = sortedEntries.map((val) => {
       const value1Str = stringify(val.value1, depth + 1);
       const value2Str = stringify(val.value2, depth + 1);
       switch (val.status) {
