@@ -19,4 +19,8 @@ make install
 
 ## Asciinems
 
+Compare simple json files
 [![asciicast](https://asciinema.org/a/A6Cx30pSeeyWJSHCktzJ4eDzU.svg)](https://asciinema.org/a/A6Cx30pSeeyWJSHCktzJ4eDzU)
+
+Compare nested json/yml files
+[![asciicast](https://asciinema.org/a/zibxDARPgGXX02QGYZT5D1mPI.svg)](https://asciinema.org/a/zibxDARPgGXX02QGYZT5D1mPI)
