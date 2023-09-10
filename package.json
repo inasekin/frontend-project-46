@@ -4,11 +4,11 @@
   "description": "[![Actions Status](https://github.com/inasekin/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/inasekin/frontend-project-46/actions)",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --bail --coverage",
     "lint": "make lint"
   },
   "bin": {
-    "gendiff": "bin/gendiff.js"
+    "gendiff": "bin/index.js"
   },
   "type": "module",
   "repository": {
