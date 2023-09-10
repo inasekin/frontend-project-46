@@ -49,13 +49,13 @@ const getObjectDiff = (obj1, obj2) => {
   }, {});
 };
 
-const genDiff = (firstFile, secondFile, format = 'stylish') => {
+const genDiff = (firstFile, secondFile, formatName = 'stylish') => {
   const firstData = fileParse(readFile(firstFile, 'utf8'), path.extname(firstFile));
   const secondData = fileParse(readFile(secondFile, 'utf8'), path.extname(secondFile));
 
   const diff = getObjectDiff(firstData, secondData);
 
-  return outputFormatter(diff, format);
+  return outputFormatter(diff, formatName);
 };
 
 export default genDiff;

@@ -12,6 +12,7 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
 const resultFile = readFile('result1.txt');
+const resultFilePlain = readFile('resultPlain.txt');
 
 describe('genDiff', () => {
   it('genDiff json file', () => {
@@ -26,5 +27,12 @@ describe('genDiff', () => {
     const path2 = getFixturePath('file2.yaml');
 
     expect(genDiff(path1, path2)).toEqual(resultFile);
+  });
+
+  it('genDiff file with plain format', () => {
+    const path1 = getFixturePath('file1.yml');
+    const path2 = getFixturePath('file2.yaml');
+
+    expect(genDiff(path1, path2, 'plain')).toEqual(resultFilePlain);
   });
 });
