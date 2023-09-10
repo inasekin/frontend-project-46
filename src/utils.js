@@ -10,16 +10,16 @@ export const sortPlain = (arr) => {
   }
 
   const pivot = arr[0];
-  const left = [];
-  const right = [];
+  let left = [];
+  let right = [];
 
-  arr.slice(1).forEach((element) => {
-    if (element < pivot) {
-      left.push(element);
+  for (let i = 1; i < arr.length; i += 1) {
+    if (arr[i] < pivot) {
+      left = left.concat(arr[i]);
     } else {
-      right.push(element);
+      right = right.concat(arr[i]);
     }
-  });
+  }
 
   return sortPlain(left).concat(pivot, sortPlain(right));
 };
@@ -30,14 +30,14 @@ export const sortStylish = (arr, compareFunction) => {
   }
 
   const pivot = arr[0];
-  const left = [];
-  const right = [];
+  let left = [];
+  let right = [];
 
   arr.slice(1).forEach((element) => {
     if (compareFunction(element, pivot) < 0) {
-      left.push(element);
+      left = left.concat(element);
     } else {
-      right.push(element);
+      right = right.concat(element);
     }
   });
 
