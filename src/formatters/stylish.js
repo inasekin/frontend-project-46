@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 const indent = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount).slice(0, -2);
+const getIndentation = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount).slice(0, -2);
 
 const stringify = (value, depth = 1) => {
   if (!_.isObject(value)) {
@@ -13,20 +14,22 @@ const stringify = (value, depth = 1) => {
 
 const stylish = (diff) => {
   const iter = (currentValue, depth) => {
-    const lastBracketIndent = depth === 1 ? '' : `${indent(depth - 1)}  `;
-    const arrValue = Object.values(currentValue);
-    const lines = arrValue.map((val) => {
+    const processNested = (val, dep) => `${getIndentation(dep)}  ${val.name}: ${iter(val.children, dep + 1)}`;
+    const lastBracketIndent = depth === 1 ? '' : `${getIndentation(depth - 1)}  `;
+    const lines = currentValue.map((val) => {
+      const value1Str = stringify(val.value1, depth + 1);
+      const value2Str = stringify(val.value2, depth + 1);
       switch (val.status) {
         case 'changed':
-          return `${indent(depth)}- ${val.name}:${stringify(val.value1, depth + 1) ? ` ${stringify(val.value1, depth + 1)}` : ''}\n${indent(depth)}+ ${val.name}: ${stringify(val.value2, depth + 1)}`;
+          return `${getIndentation(depth)}- ${val.name}:${value1Str ? ` ${value1Str}` : ''}\n${getIndentation(depth)}+ ${val.name}: ${value2Str}`;
         case 'unchanged':
-          return `${indent(depth)}  ${val.name}: ${stringify(val.value, depth + 1)}`;
+          return `${getIndentation(depth)}  ${val.name}: ${stringify(val.value, depth + 1)}`;
         case 'deleted':
-          return `${indent(depth)}- ${val.name}: ${stringify(val.value, depth + 1)}`;
+          return `${getIndentation(depth)}- ${val.name}: ${stringify(val.value, depth + 1)}`;
         case 'nested':
-          return `${indent(depth)}  ${val.name}: ${iter(val.children, depth + 1)}`;
+          return processNested(val, depth);
         case 'added':
-          return `${indent(depth)}+ ${val.name}: ${stringify(val.value, depth + 1)}`;
+          return `${getIndentation(depth)}+ ${val.name}: ${stringify(val.value, depth + 1)}`;
         default:
           throw new Error(`Unknown type ${val.status}`);
       }

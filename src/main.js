@@ -9,7 +9,7 @@ const getObjectDiff = (obj1, obj2) => {
   const keys2 = Object.keys(obj2);
   const allKeys = _.union(keys1, keys2);
 
-  const diff = allKeys.map((key) => {
+  return allKeys.map((key) => {
     const val1 = obj1[key];
     const val2 = obj2[key];
     const hasOwn1 = Object.prototype.hasOwnProperty.call(obj1, key);
@@ -35,8 +35,6 @@ const getObjectDiff = (obj1, obj2) => {
 
     return { name: key, status: 'unchanged', value: val1 };
   });
-
-  return diff;
 };
 
 const genDiff = (firstFile, secondFile, formatName = 'stylish') => {
