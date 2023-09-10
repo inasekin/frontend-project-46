@@ -12,41 +12,29 @@ const getObjectDiff = (obj1, obj2) => {
   return allKeys.map((key) => {
     const val1 = obj1[key];
     const val2 = obj2[key];
-    if (!Object.hasOwn(obj1, key)) {
-      return {
-        name: key,
-        status: 'added',
-        value: val2,
-      };
+    const hasOwn1 = Object.prototype.hasOwnProperty.call(obj1, key);
+    const hasOwn2 = Object.prototype.hasOwnProperty.call(obj2, key);
+
+    if (!hasOwn1) {
+      return { name: key, status: 'added', value: val2 };
     }
-    if (!Object.hasOwn(obj2, key)) {
-      return {
-        name: key,
-        status: 'deleted',
-        value: val1,
-      };
+
+    if (!hasOwn2) {
+      return { name: key, status: 'deleted', value: val1 };
     }
+
     if (_.isPlainObject(val1) && _.isPlainObject(val2)) {
+      return { name: key, status: 'nested', children: getObjectDiff(val1, val2) };
+    }
+
+    if (!_.isEqual(val1, val2)) {
       return {
-        name: key,
-        status: 'nested',
-        children: getObjectDiff(obj1[key], obj2[key]),
+        name: key, status: 'changed', value1: val1, value2: val2,
       };
     }
-    if (!_.isEqual(obj1[key], obj2[key])) {
-      return {
-        name: key,
-        status: 'changed',
-        value1: val1,
-        value2: val2,
-      };
-    }
-    return {
-      name: key,
-      status: 'unchanged',
-      value: val1,
-    };
-  }, {});
+
+    return { name: key, status: 'unchanged', value: val1 };
+  });
 };
 
 const genDiff = (firstFile, secondFile, formatName = 'stylish') => {
