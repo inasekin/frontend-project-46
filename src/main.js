@@ -2,95 +2,60 @@ import _ from 'lodash';
 import path from 'path';
 import fileParse from './parsers.js';
 import { readFile } from './utils.js';
+import outputFormatter from './formatters/index.js';
 
-// eslint-disable-next-line max-len
-const getObjectDiff = (obj1, obj2, compareRef = false) => Object.keys(obj1).reduce((result, key) => {
-  // eslint-disable-next-line no-prototype-builtins
-  if (!obj2.hasOwnProperty(key)) {
-    result.push(key);
-  } else if (_.isEqual(obj1[key], obj2[key])) {
-    const resultKeyIndex = result.indexOf(key);
+const getObjectDiff = (obj1, obj2) => {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  const allKeys = _.union(keys1, keys2);
 
-    if (compareRef && obj1[key] !== obj2[key]) {
-      // eslint-disable-next-line no-param-reassign
-      result[resultKeyIndex] = `${key} (ref)`;
-    } else {
-      result.splice(resultKeyIndex, 1);
+  return allKeys.map((key) => {
+    const val1 = obj1[key];
+    const val2 = obj2[key];
+    if (!Object.hasOwn(obj1, key)) {
+      return {
+        name: key,
+        status: 'added',
+        value: val2,
+      };
     }
-  }
-  return result;
-}, Object.keys(obj2));
-
-// eslint-disable-next-line consistent-return
-const renderString = (key, value, data1, data2) => {
-  if (
-    !Object.keys(data2).includes(key)
-    && Object.keys(data1).includes(key)
-  ) {
-    return `  - ${key}: ${value}\n`;
-  }
-
-  if (Object.keys(data1).includes(key)
-    && Object.keys(data2).includes(key)
-    && data1[key] === data2[key]) {
-    return `    ${key}: ${value}\n`;
-  }
-
-  if (Object.keys(data1).includes(key)
-    && Object.keys(data2).includes(key)
-    && data1[key] !== data2[key]) {
-    return `  - ${key}: ${data1[key]}\n  + ${key}: ${data2[key]}\n`;
-  }
-
-  if (
-    Object.keys(data2).includes(key)
-    && !Object.keys(data1).includes(key)
-  ) {
-    return `  + ${key}: ${value}\n`;
-  }
+    if (!Object.hasOwn(obj2, key)) {
+      return {
+        name: key,
+        status: 'deleted',
+        value: val1,
+      };
+    }
+    if (_.isPlainObject(val1) && _.isPlainObject(val2)) {
+      return {
+        name: key,
+        status: 'nested',
+        children: getObjectDiff(obj1[key], obj2[key]),
+      };
+    }
+    if (!_.isEqual(obj1[key], obj2[key])) {
+      return {
+        name: key,
+        status: 'changed',
+        value1: val1,
+        value2: val2,
+      };
+    }
+    return {
+      name: key,
+      status: 'unchanged',
+      value: val1,
+    };
+  }, {});
 };
 
-const convertJsonToString = (arr, firstObj, secondObj) => {
-  const startString = '{\n';
-  const endString = '}\n';
-  let resultString = '';
-
-  resultString += startString;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const item of arr) {
-    resultString += renderString(item[0], item[1], firstObj, secondObj);
-  }
-
-  resultString += endString;
-
-  return resultString;
-};
-
-const genDiff = (firstFile, secondFile) => {
+const genDiff = (firstFile, secondFile, format = 'stylish') => {
   const firstData = fileParse(readFile(firstFile, 'utf8'), path.extname(firstFile));
   const secondData = fileParse(readFile(secondFile, 'utf8'), path.extname(secondFile));
 
-  const objWithChanges = { ...secondData };
-  const result = {};
-  const changedKeys = getObjectDiff(firstData, secondData);
+  const diff = getObjectDiff(firstData, secondData);
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key of Object.keys(firstData)) {
-    if (changedKeys.includes(key) && !Object.keys(secondData).includes(key)) {
-      objWithChanges[key] = firstData[key];
-    }
-  }
-
-  Object.keys(objWithChanges)
-    .sort()
-    .forEach((key) => {
-      result[key] = objWithChanges[key];
-    });
-
-  console.log(convertJsonToString(Object.entries(result), firstData, secondData));
-
-  return convertJsonToString(Object.entries(result), firstData, secondData);
+  return outputFormatter(diff, format);
 };
 
 export default genDiff;

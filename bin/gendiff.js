@@ -13,6 +13,8 @@ program
   .version('1.0.0')
   .option('-f, --format <type>', 'output format')
   .action((firstFile, secondFile) => {
-    genDiff(firstFile, secondFile);
+    const output = genDiff(firstFile, secondFile);
+
+    console.log(output);
   })
   .parse();
