@@ -16,5 +16,6 @@ program
     const output = genDiff(firstFile, secondFile, program.opts().format);
 
     console.log(output);
-  })
-  .parse();
+  });
+
+program.parse();
