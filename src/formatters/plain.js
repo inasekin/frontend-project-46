@@ -1,3 +1,5 @@
+import { sortPlain } from '../utils.js';
+
 const getType = (value) => {
   if (typeof value === 'object' && value !== null) {
     return '[complex value]';
@@ -35,8 +37,9 @@ const plain = (data) => {
           throw new Error(`Unknown type ${value.status}`);
       }
     });
-    const sortedLines = [...lines].sort();
-    return sortedLines.filter((line) => line !== undefined).join('\n');
+    const sortedLines = sortPlain(lines);
+
+    return sortedLines.join('\n');
   };
 
   return generatePropertyLines(data);

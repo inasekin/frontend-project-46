@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { sortStylish } from '../utils.js';
 
 const indent = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount).slice(0, -2);
 const getIndentation = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount).slice(0, -2);
@@ -19,7 +20,7 @@ const stylish = (diff) => {
     const processNested = (val, dep) => `${getIndentation(dep)}  ${val.name}: ${iter(val.children, dep + 1)}`;
     const lastBracketIndent = depth === 1 ? '' : `${getIndentation(depth - 1)}  `;
 
-    const sortedEntries = [...currentValue].sort((a, b) => a.name.localeCompare(b.name));
+    const sortedEntries = sortStylish(currentValue, (a, b) => a.name.localeCompare(b.name));
 
     const lines = sortedEntries.map((val) => {
       const value1Str = stringify(val.value1, depth + 1);
