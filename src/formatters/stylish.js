@@ -1,5 +1,3 @@
-// stylish.js
-
 import _ from 'lodash';
 
 const indent = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount).slice(0, -2);
