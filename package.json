@@ -23,7 +23,7 @@
   "homepage": "https://github.com/inasekin/frontend-project-46#readme",
   "pre-commit": [
     "lint",
-    "test",
+    "test"
   ],
   "dependencies": {
     "commander": "10.0.0",
