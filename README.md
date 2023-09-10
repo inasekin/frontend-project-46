@@ -27,3 +27,6 @@ Compare nested json/yml files
 
 Compare nested json/yml files with plain format
 [![asciicast](https://asciinema.org/a/SpipjD1t2ibuVsjRaHQZyr1FT.svg)](https://asciinema.org/a/SpipjD1t2ibuVsjRaHQZyr1FT)
+
+Compare nested json/yml files with json format
+[![asciicast](https://asciinema.org/a/HE8m9N2TOXQ5qGkLG3LXGspQI.svg)](https://asciinema.org/a/HE8m9N2TOXQ5qGkLG3LXGspQI)
