@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import path from 'path';
-import { dataParse, readFile } from './utils.js';
+import fileParse from './parsers.js';
+import { readFile } from './utils.js';
 
 // eslint-disable-next-line max-len
 const getObjectDiff = (obj1, obj2, compareRef = false) => Object.keys(obj1).reduce((result, key) => {
@@ -51,7 +52,7 @@ const renderString = (key, value, data1, data2) => {
 
 const convertJsonToString = (arr, firstObj, secondObj) => {
   const startString = '{\n';
-  const endString = '}\n';
+  const endString = '}';
   let resultString = '';
 
   resultString += startString;
@@ -67,8 +68,9 @@ const convertJsonToString = (arr, firstObj, secondObj) => {
 };
 
 const genDiff = (firstFile, secondFile) => {
-  const firstData = dataParse(readFile(firstFile, 'utf8'), path.extname(firstFile));
-  const secondData = dataParse(readFile(secondFile, 'utf8'), path.extname(secondFile));
+  const firstData = fileParse(readFile(firstFile, 'utf8'), path.extname(firstFile));
+  const secondData = fileParse(readFile(secondFile, 'utf8'), path.extname(secondFile));
+
   const objWithChanges = { ...secondData };
   const result = {};
   const changedKeys = getObjectDiff(firstData, secondData);
