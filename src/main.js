@@ -52,7 +52,7 @@ const renderString = (key, value, data1, data2) => {
 
 const convertJsonToString = (arr, firstObj, secondObj) => {
   const startString = '{\n';
-  const endString = '}';
+  const endString = '}\n';
   let resultString = '';
 
   resultString += startString;
