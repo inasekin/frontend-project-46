@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/inasekin/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/inasekin/frontend-project-46/actions)",
+  "description": "Difference Generator. Gendiff is a utility compares two configuration files and shows a difference.",
   "main": "src/main.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --bail --coverage",
@@ -27,7 +27,6 @@
   ],
   "dependencies": {
     "commander": "10.0.0",
-    "debug": "4.3.4",
     "js-yaml": "^4.1.0",
     "lodash": "4.17.21",
     "prettier": "^2.8.8"
