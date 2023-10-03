@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { sortStylish } from '../utils.js';
 
 const indent = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount).slice(0, -2);
 const getIndentation = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount).slice(0, -2);
@@ -42,7 +41,7 @@ const renderLine = (val, depth, fnNested) => {
         depth + 1,
       )}`;
     default:
-      throw new Error(`Unknown type ${val.status}`);
+      throw new Error(`Неизвестный тип ${val.status}`);
   }
 };
 
@@ -51,7 +50,7 @@ const stylish = (diff) => {
     const processNested = (val, dep) => `${getIndentation(dep)}  ${val.name}: ${iter(val.children, dep + 1)}`;
     const lastBracketIndent = depth === 1 ? '' : `${getIndentation(depth - 1)}  `;
 
-    const sortedEntries = sortStylish(currentValue, (a, b) => a.name.localeCompare(b.name));
+    const sortedEntries = _.sortBy(currentValue, 'name');
 
     const lines = sortedEntries.map((val) => renderLine(val, depth, processNested));
     return ['{', ...lines, `${lastBracketIndent}}`].join('\n');

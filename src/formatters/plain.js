@@ -1,4 +1,4 @@
-import { sortPlain } from '../utils.js';
+import _ from 'lodash';
 
 const getType = (value) => {
   if (typeof value === 'object' && value !== null) {
@@ -37,7 +37,8 @@ const plain = (data) => {
           throw new Error(`Unknown type ${value.status}`);
       }
     });
-    const sortedLines = sortPlain(lines);
+
+    const sortedLines = _.sortBy(lines);
 
     return sortedLines.join('\n');
   };

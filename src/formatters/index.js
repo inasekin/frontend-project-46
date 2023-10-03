@@ -2,19 +2,16 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 
 const outputFormatter = (data, formatter) => {
-  if (formatter === 'stylish') {
-    return stylish(data);
+  switch (formatter) {
+    case 'stylish':
+      return stylish(data);
+    case 'plain':
+      return plain(data);
+    case 'json':
+      return JSON.stringify(data, null, 2);
+    default:
+      throw new Error(`Wrong formatter: ${formatter}`);
   }
-
-  if (formatter === 'plain') {
-    return plain(data);
-  }
-
-  if (formatter === 'json') {
-    return JSON.stringify(data, null, 2);
-  }
-
-  throw new Error(`Wrong formatter: ${formatter}`);
 };
 
 export default outputFormatter;
